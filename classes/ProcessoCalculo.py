@@ -1,17 +1,29 @@
+from classes.Processo import Processo
+
 class ProcessoCalculo(Processo):
-    def _init_(self,pid,operando1,operando2,operador):
-        super()._init_(pid)
-        self.operando1=int(operando1)
-        self.operando2=int(operando2)
-        self.operador=int(operador)
+    def __init__(self, pid:int, tipoProcesso:str, operando1:int, operando2:int, operador:int):
+        super().__init__(pid)
+        super().__init__(tipoProcesso)
+
+        self.operando1 = operando1
+        self.operando2 = operando2
+        self.operador = operador
+
+    def Info(self):
+        super().Info()
+        print(f'Operador: {self.operador}')
+        print(f'Operando1: {self.operando1}')
+        print(f'Operando2: {self.operando2}')
 
     def execute(self):
-        if self.operador == 1:
-            resposta = self.operando1 + self.operando2
-        elif self.operador == 2:
-            resposta = self.operando1 - self.operando2
-        elif self.operador == 3:
-            resposta = self.operando1 * self.operando2
-        elif self.operador == 4:
-            resposta = self.operando1 / self.operando2
+        match self.operador:
+            case 1:
+                resposta = self.operando1 + self.operando2
+            case 2:
+                resposta = self.operando1 - self.operando2
+            case 3:
+                resposta = self.operando1 * self.operando2
+            case 4:
+                resposta = self.operando1 / self.operando2
+
         return resposta
