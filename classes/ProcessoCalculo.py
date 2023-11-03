@@ -2,9 +2,7 @@ from classes.Processo import Processo
 
 class ProcessoCalculo(Processo):
     def __init__(self, pid:int, tipoProcesso:str, operando1:int, operando2:int, operador:int):
-        super().__init__(pid)
-        super().__init__(tipoProcesso)
-
+        super().__init__(pid, tipoProcesso) # passamos o pid e o tipoProcesso para a super classe
         self.operando1 = operando1
         self.operando2 = operando2
         self.operador = operador
