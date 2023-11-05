@@ -13,6 +13,18 @@ class ProcessoCalculo(Processo):
         print(f'Operando1: {self.operando1}')
         print(f'Operando2: {self.operando2}')
 
+    def expressao(self):
+        match self.operador:
+            case 1:
+                expressao = f'{self.operando1} + {self.operando2}'
+            case 2:
+                expressao = f'{self.operando1} - {self.operando2}'
+            case 3:
+                expressao = f'{self.operando1} * {self.operando2}'
+            case 4:
+                expressao = f'{self.operando1} / {self.operando2}'
+        return expressao
+
     def execute(self):
         match self.operador:
             case 1:
