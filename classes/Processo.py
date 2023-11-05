@@ -6,6 +6,9 @@ class Processo:
     def getPid(self):
         return self.pid
     
+    def getTipoProcesso(self):
+        return self.tipoProcesso
+    
     def Info(self):
         print(f'PID: {self.pid}')
 
