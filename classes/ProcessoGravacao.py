@@ -17,6 +17,6 @@ class ProcessoGravacao(Processo):
         f = open('trabalhoGB/computation.csv', 'w')
         writer = csv.writer(f)
         for linha in data:
-           writer.writerow(l[0], l[1])
+           writer.writerow(linha[0], linha[1])
         writer.writerow(super().getPid() , self.processoCalculo.expressao())
         f.close()
