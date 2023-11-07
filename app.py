@@ -73,6 +73,7 @@ if __name__ == "__main__":
                         i += 1
                         processo = Processo(i, 'Leitura')
                         processoLeitura = ProcessoLeitura(i,'computation.csv')
+                        processoLeitura.leitura()
                         listaProcessos.append([processo.getPid(), str(processo.getTipoProcesso())])
                         i = processoLeitura.getPid()
                         print('Processo do TIPO LEITURA' + Fore.GREEN + ' criado com sucesso!' + Fore.WHITE)
