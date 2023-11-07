@@ -1,3 +1,4 @@
+import csv
 from classes.Processo import Processo
 from classes.Sistema import *
 from classes.ProcessoCalculo import *

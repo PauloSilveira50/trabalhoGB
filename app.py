@@ -72,7 +72,7 @@ if __name__ == "__main__":
                         print('-'*50)
                         i += 1
                         processo = Processo(i, 'Leitura')
-                        processoLeitura = ProcessoLeitura(i,'computation.csv')
+                        processoLeitura = ProcessoLeitura(i,'trabalhoGB/computation.csv')
                         processoLeitura.leitura()
                         listaProcessos.append([processo.getPid(), str(processo.getTipoProcesso())])
                         i = processoLeitura.getPid()
