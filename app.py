@@ -77,6 +77,7 @@ if __name__ == "__main__":
                         listaProcessos.append([processo.getPid(), str(processo.getTipoProcesso())])
                         i = processoLeitura.getPid()
                         print('Processo do TIPO LEITURA' + Fore.GREEN + ' criado com sucesso!' + Fore.WHITE)
+                        
                     
                     case 4: # impressão
                         print('-'*50)

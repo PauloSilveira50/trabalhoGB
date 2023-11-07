@@ -23,9 +23,9 @@ class ProcessoLeitura(Processo):
         linhas=len(calculos)
         #Separamos cada elemento das expresões por linhas da tabela
         for l in range(linhas):
-            operando1 = calculos[l][0]
-            operando2 = calculos[l][2]
-            operador = calculos[l][1]
+            operando1 = int(str(calculos[l])[2])
+            operando2 = int(str(calculos[l])[4])
+            operador = (str(calculos[l])[3])
             #Chamamos o processo cálculo para execução
             processo = Processo(self.pid, 'Cálculo')
             processoCalculo = ProcessoCalculo(processo.getPid(), processo.getTipoProcesso(), operando1, operando2, operador)
