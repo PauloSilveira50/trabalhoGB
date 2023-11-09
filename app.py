@@ -54,26 +54,25 @@ if __name__ == "__main__":
                             print('-'*50)
                             escolhaProcesso = int(input('Informe o PID do Processo que deseja gravar? '))
                             print('-'*50)
-                            if l[0] == escolhaProcesso:
-                                for c in listaProcessosCalculo:
-                                    if l[0] == c[0]:
-                                        processoCalculo = ProcessoCalculo(l[0], l[1], c[1], c[3], c[2])
-                                        i += 1
-                                        processo = Processo(i, 'Gravação')
-                                        processoGravacao = ProcessoGravacao(i, processoCalculo.expressao())
-                                        listaProcessos.append([processo.getPid(), str(processo.getTipoProcesso())])
-                                        listaProcessosGravacao.append([processo.getPid(), str(processo.getTipoProcesso()), str(processoCalculo.expressao())])
-                                        print('Processo do TIPO GRAVAÇÃO' + Fore.GREEN + ' criado com sucesso!' + Fore.WHITE)
-
-                            elif (l == listaProcessos[-1]) and (num == 0):
-                                print(Fore.RED + 'Tente criar um processo do tipo CÁLCULO antes!' + Fore.WHITE)       
+                            for l in listaProcessos:
+                                if l[0] == escolhaProcesso:
+                                    for c in listaProcessosCalculo:
+                                        if l[0] == c[0]:
+                                            processoCalculo = ProcessoCalculo(l[0], l[1], c[1], c[3], c[2])
+                                            i += 1
+                                            processo = Processo(i, 'Gravação')
+                                            processoGravacao = ProcessoGravacao(i, processoCalculo.expressao())
+                                            listaProcessos.append([processo.getPid(), str(processo.getTipoProcesso())])
+                                            listaProcessosGravacao.append([processo.getPid(), str(processo.getTipoProcesso()), str(processoCalculo.expressao())])
+                                            print('Processo do TIPO GRAVAÇÃO' + Fore.GREEN + ' criado com sucesso!' + Fore.WHITE)
+                                elif (l == listaProcessos[-1]) and (num == 0):
+                                    print(Fore.RED + 'Tente criar um processo do tipo CÁLCULO antes!' + Fore.WHITE)       
                     
                     case 3: # leitura
                         print('-'*50)
                         i += 1
                         processo = Processo(i, 'Leitura')
                         processoLeitura = ProcessoLeitura(i,'trabalhoGB/computation.csv')
-                        processoLeitura.leitura()
                         listaProcessos.append([processo.getPid(), str(processo.getTipoProcesso())])
                         i = processoLeitura.getPid()
                         print('Processo do TIPO LEITURA' + Fore.GREEN + ' criado com sucesso!' + Fore.WHITE)
@@ -83,15 +82,102 @@ if __name__ == "__main__":
                         print('-'*50)
                         i += 1
                         processo = Processo(i, 'Impressão')
+                        processoImpressao = ProcessoImpressao(i)
                         listaProcessos.append([processo.getPid(), str(processo.getTipoProcesso())])
                         print('Processo do TIPO IMPRESSÃO' + Fore.GREEN + ' criado com sucesso!' + Fore.WHITE)
 
             case 2: # Executar Próximo Processo
-                pass
+                for v in range(1):
+                    if 'Cálculo' in listaProcessos[0]:
+                        pid = listaProcessosCalculo[0][0]
+                        operando1 = listaProcessosCalculo[0][1]
+                        operando2 = listaProcessosCalculo[0][3]
+                        operador = listaProcessosCalculo[0][2]
+                        processoCalculo = ProcessoCalculo(pid, 'Cálculo', operando1, operando2, operador)
+                        print('-'*50)
+                        print('Processo do TIPO CÁLCULO')
+                        print('Resultado do cálculo é igual a: {}'.format(processoCalculo.execute()))
+                        listaProcessos.pop(0)
+                        listaProcessosCalculo.pop(0)
+                    elif 'Leitura' in listaProcessos[0]:
+                        processoLeitura = ProcessoLeitura(i,'trabalhoGB/computation.csv')
+                        processoLeitura.execute()
+                        print('-'*50)
+                        print('Processo do TIPO LEITURA')
+                        print('Arquivo lido com sucesso!')
+                        listaProcessos.pop(0)
+                        i = processoLeitura.getPid() - 1
+                    elif 'Impressão' in listaProcessos[0]:
+                        processoImpressao = ProcessoImpressao(i)
+                        print('-'*50)
+                        print('Processo do TIPO IMPRESSÃO')
+                        processoImpressao.execute()
+                        listaProcessos.pop(0)
+                    else:
+                        pid = listaProcessosGravacao[0][0]
+                        expressao = listaProcessosGravacao[0][2]
+                        processoGravacao = ProcessoGravacao(pid, expressao)    
+                        processoGravacao.execute()
+                        print('-'*50)
+                        print('Processo do TIPO GRAVAÇÃO')
+                        print('Arquivo salvo com sucesso!')
+                        listaProcessos.pop(0)
+                        listaProcessosGravacao.pop(0)
             
             case 3: # Executar Processo Específico
-                pass
-            
+                pidProcesso = int(input('Informe o PID do Processo que deseja executar? '))
+                linhas = len(listaProcessos)
+                linhasCalculo = len(listaProcessosCalculo)
+                linhasGravacao = len(listaProcessosGravacao)
+                contador = 0
+                for v in range(linhas):
+                    if contador == 1:
+                        break
+                    else:
+                        if listaProcessos[v][0] == pidProcesso:
+                            if listaProcessos[v][1] == 'Cálculo':
+                                for o in range (linhasCalculo):
+                                    if listaProcessosCalculo[o][0] == pidProcesso:
+                                        operando1 = listaProcessosCalculo[o][1]
+                                        operador = listaProcessosCalculo[o][2]
+                                        operando2 = listaProcessosCalculo[o][3]
+                                        processoCalculo = ProcessoCalculo(pidProcesso, 'Cálculo', operando1, operando2, operador)
+                                        processoCalculo.execute()
+                                        print('-'*50)
+                                        print('Processo do TIPO CÁLCULO')
+                                        print('Resultado do cálculo é igual a: {}'.format(processoCalculo.execute()))
+                                        listaProcessos.pop(v)
+                                        listaProcessosCalculo.pop(o)
+                                        contador += 1
+                            elif listaProcessos[v][1] == 'Leitura':
+                                processoLeitura = ProcessoLeitura(pidProcesso,'trabalhoGB/computation.csv')
+                                processoLeitura.execute()
+                                print('-'*50)
+                                print('Processo do TIPO LEITURA')
+                                print('Arquivo lido com sucesso!')
+                                listaProcessos.pop(v)
+                                contador += 1
+                            elif listaProcessos[v][1] == 'Impressão':
+                                processoImpressao = ProcessoImpressao(pidProcesso)
+                                print('-'*50)
+                                print('Processo do TIPO IMPRESSÃO')
+                                processoImpressao.execute()
+                                listaProcessos.pop(v)
+                                contador += 1
+                            elif listaProcessos[v][1] == 'Gravação':
+                                for e in range (linhasGravacao):
+                                    if listaProcessosGravacao[e][0] == pidProcesso:
+                                        expressao = listaProcessosGravacao[e][2]
+                                        processoGravacao = ProcessoGravacao(pidProcesso, expressao)    
+                                        processoGravacao.execute()
+                                        print('-'*50)
+                                        print('Processo do TIPO GRAVAÇÃO')
+                                        print('Arquivo salvo com sucesso!')
+                                        listaProcessos.pop(v)
+                                        listaProcessosGravacao.pop(e)
+                                        contador += 1
+
+                            
             case 4: # Salvar a Fila de Processos
                 pass
             

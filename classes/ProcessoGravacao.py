@@ -7,16 +7,7 @@ class ProcessoGravacao(Processo):
         self.processoCalculo = processoCalculo
 
     def execute(self):
-        # Pega todos os dados do arquivo csv
-        f = open('trabalhoGB/computation.csv')
-        reader = csv.reader(f)
-        data = list(reader)
-        f.close()
-
         # Salva linha por linha da matriz, deixando a expressão do processo novo por ultimo
-        f = open('trabalhoGB/computation.csv', 'w')
+        f = open('trabalhoGB/computation.csv', 'a', newline='')
         writer = csv.writer(f)
-        for linha in data:
-           writer.writerow(linha[0], linha[1])
-        writer.writerow(super().getPid() , self.processoCalculo.expressao())
-        f.close()
+        writer.writerow([self.processoCalculo])

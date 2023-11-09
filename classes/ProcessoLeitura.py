@@ -1,4 +1,5 @@
 import csv
+import re
 from classes.Processo import Processo
 from classes.Sistema import *
 from classes.ProcessoCalculo import *
@@ -15,22 +16,33 @@ class ProcessoLeitura(Processo):
     def getPid(self):
         return self.pid
 
-    def leitura(self):
+    def execute(self):
         #Transforma o arquivo de texto em uma tabela
         pou = open(self.arquivo)
         rComputation = csv.reader(pou)
         calculos = list(rComputation)
         linhas=len(calculos)
+        self.pid += 1
         #Separamos cada elemento das expresões por linhas da tabela
         for l in range(linhas):
-            operando1 = int(str(calculos[l])[2])
-            operando2 = int(str(calculos[l])[4])
-            operador = (str(calculos[l])[3])
+            expressao = (calculos[l][0])
+            operando1 = re.findall(r'\d+',expressao)[0]
+            operando2 = re.findall(r'\d+',expressao)[2]
+            operador = re.findall(r'[+\-*/]', expressao)[0]
+            if operador == '+':
+                operador = 1
+            elif operador == '-':
+                operador = 2
+            elif operador == '*':
+                operador = 3
+            else:
+                operador = 4
             #Chamamos o processo cálculo para execução
             processo = Processo(self.pid, 'Cálculo')
-            processoCalculo = ProcessoCalculo(processo.getPid(), processo.getTipoProcesso(), operando1, operando2, operador)
+            processoCalculo = ProcessoCalculo(self.pid, processo.getTipoProcesso(), float(operando1), float(operando2), operador)
             listaProcessos.append([self.pid, str(processo.getTipoProcesso())])
             listaProcessosCalculo.append([self.pid, processoCalculo.operando1, processoCalculo.operador, processoCalculo.operando2])
             #Aumentamos em 1 o id de processo 
             self.pid += 1
+        open(self.arquivo, 'w')
         
